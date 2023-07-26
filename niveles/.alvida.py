@@ -1,6 +1,6 @@
-import pygame, time
+import pygame, time, os
 from pygame.locals import *
-
+from 
 ANCHO = 800
 ALTO = 600
 
@@ -23,32 +23,44 @@ BACKGROUND_X = 0
 class Jugador(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+    
 
-        self.image = pygame.transform.scale(pygame.image.load('recursos/imagenes/quieto.png').convert(), (90, 110))
+        # Obtener la ruta del archivo actual
+        directorio_actual = os.path.dirname(os.path.abspath(__file__))
+        print(directorio_actual)
+        # Construir la ruta a la imagen relativa al archivo actual
+        ruta_imagen = os.path.join(directorio_actual, '..', 'recursos', 'imagenes', '{}')
+
+        # Cargar la imagen y redimensionarla
+        self.image = pygame.transform.scale(pygame.image.load(ruta_imagen.format("quieto.png")).convert(), (90, 110))
+
+
+        # self.image = pygame.transform.scale(pygame.image.load('recursos/imagenes/quieto.png').convert(), (90, 110))
         self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
         self.rect.center = (200, 500)
         self.posicion_x = 0
+        ruta_imagen_correr = os.path.join(directorio_actual, '..', 'recursos', 'imagenes', '{}')
 
-        self.correr_lista = [pygame.image.load("recursos/imagenes/Run1.png"),
-                             pygame.image.load("recursos/imagenes/Run2.png"),
-                             pygame.image.load("recursos/imagenes/Run3.png"),
-                             pygame.image.load("recursos/imagenes/Run4.png"),
-                             pygame.image.load("recursos/imagenes/Run5.png"),
-                             pygame.image.load("recursos/imagenes/Run6.png"),
-                             pygame.image.load("recursos/imagenes/Run7.png"),
-                             pygame.image.load("recursos/imagenes/Run8.png"),]
+        self.correr_lista = [pygame.image.load(ruta_imagen_correr.format("Run1.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run2.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run3.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run4.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run5.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run6.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run7.png")),
+                             pygame.image.load(ruta_imagen_correr.format("Run8.png")),]
         # quedarse dormido
 
-        self.demasiado_quieto_secuencia = [pygame.image.load('recursos/imagenes/Demasiadoquieto1.png'),
-                                        pygame.image.load('recursos/imagenes/Demasiadoquieto2.png'),
-                                        pygame.image.load('recursos/imagenes/Demasiadoquieto3.png'),
-                                        pygame.image.load('recursos/imagenes/Demasiadoquieto4.png'),
-                                        pygame.image.load('recursos/imagenes/Demasiadoquieto5.png'),]
-
+        # self.demasiado_quieto_secuencia = [pygame.image.load('recursos/imagenes/Demasiadoquieto1.png'),
+        #                                 pygame.image.load('recursos/imagenes/Demasiadoquieto2.png'),
+        #                                 pygame.image.load('recursos/imagenes/Demasiadoquieto3.png'),
+        #                                 pygame.image.load('recursos/imagenes/Demasiadoquieto4.png'),
+        #                                 pygame.image.load('recursos/imagenes/Demasiadoquieto5.png'),]
+        #
         self.indice_correr = 0
-        self.indice_demasiado_quieto = 0
-        self.velocidad_secuencia_demasiado_quieto = 5
+        # self.indice_demasiado_quieto = 0
+        # self.velocidad_secuencia_demasiado_quieto = 5
         self.velocidad_correr = 8
         self.movimiento_derecha = False
         self.movimiento_izquierda = False
@@ -103,14 +115,14 @@ class Jugador(pygame.sprite.Sprite):
             quieto_img = pygame.transform.scale(pygame.image.load('recursos/imagenes/quieto.png').convert(), (90, 130))
             quieto_img.set_colorkey(NEGRO)
             self.image = quieto_img
-            if tiempo_transcurrido > 5:
-                if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto:
-                    self.indice_demasiado_quieto = 0
-                imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto]
-                self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110))
-                self.image.set_colorkey(NEGRO)
-                self.indice_demasiado_quieto += 1
-                tiempo_transcurrido = 0
+            # if tiempo_transcurrido > 5:
+                # if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto:
+                #     self.indice_demasiado_quieto = 0
+                # imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto]
+                # self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110))
+                # self.image.set_colorkey(NEGRO)
+                # self.indice_demasiado_quieto += 1
+                # tiempo_transcurrido = 0
 
 
         if self.rect.left < 0:
