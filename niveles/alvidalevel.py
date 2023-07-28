@@ -43,11 +43,25 @@ class Alvidalevel(pygame.sprite.Sprite):
         if key[pygame.K_d]:
             background_x -= 10
             jugador.correr_derecha()
-            for sprite in prueba:
-                sprite.rect.x -= 10
+            # if izquierda.left < 0:
+            if derecha.right > ANCHO + 5:
+                for sprite in prueba:
+                    sprite.rect.x -= 10
+            # elif derecha.
+            # elif  
+
+            # elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
+            #     for sprite in prueba:
+            #         sprite.rect.x += 10
+
+            # for sprite in prueba:
+            #    sprite.rect.x -= 10
             self.en_movimiento = True
             # self.movimimiento_piso.rect.x -= 10
-            
+            print("$$$".center(50, "_"))
+            print(background_x)
+            print(f"derecha: {derecha.right}")
+            print(f"izquierda: {izquierda.left}")
             
 
             # jugador.rect.x += 10
@@ -58,8 +72,25 @@ class Alvidalevel(pygame.sprite.Sprite):
             background_x += 10
             jugador.correr_izquierda()
             self.en_movimiento_izquierda = True
-            for sprite in prueba:
-                sprite.rect.x += 10
+            if izquierda.left > 0:
+                for sprite in prueba:
+                    sprite.rect.x += 10
+            elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
+                for sprite in prueba:
+                    sprite.rect.x += 10
+            #
+            # if derecha.right > FONDO_ALTO:
+            #             # sprite.rect.x -=10
+            #     for sprite in prueba:
+            #         sprite.rect.x -= 10
+            # elif derecha.right < FONDO_ALTO:
+            #     for sprite in prueba:
+            #         sprite.rect.x -= 0
+
+
+            print("#".center(50, '-'))
+            print(f"derecha: {derecha.left}")
+            print(f"izquierda: {izquierda.left}")
             
 
         if not self.en_movimiento and not self.en_movimiento_izquierda:
@@ -101,6 +132,7 @@ def pisos():
         piso_1 = Piso()
         piso_1.piso(0, ALTO, imagen_piso1)
         piso_acumulativa = piso_1.rect.width
+        piso_1.rect
 
         piso_2 = Piso()
         piso_2.piso(piso_acumulativa, ALTO, imagen_piso2)
@@ -140,7 +172,8 @@ def pisos():
         sprites_piso.add(piso_7)
         sprites_piso.add(piso_8)
 
-        return sprites_piso
+        return sprites_piso, piso_1.rect, piso_8.rect
+
 
 if __name__ == "__main__":
 
@@ -149,7 +182,7 @@ if __name__ == "__main__":
     pantalla1 = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption('Level: 01')
     imagen_fondo = pygame.image.load('../recursos/imagenes/alvidabarcodentro.jpg')
-    prueba = pisos()
+    prueba, izquierda, derecha = pisos()
     nivel1 = Alvidalevel()
     jugador = Jugador()
     luffy = pygame.sprite.Group()
