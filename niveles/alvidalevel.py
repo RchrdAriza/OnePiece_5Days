@@ -27,97 +27,80 @@ background_x = 0
 class Alvidalevel(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-    # self.pantalla1 = pygame.display.set_mode((ANCHO, ALTO))
-    # pygame.display.set_caption('Level: 01')
-        self.en_movimiento_derecha = False
-        self.en_movimiento_izquierda = False 
+        self.GRAVEDAD = 9.8
+        self.velocidad_caida = 0
 
     def update(self):
-        # self.movimimiento_piso = Piso.piso()
-        self.en_movimiento = False
+        self.en_movimiento_derecha = False
         self.en_movimiento_izquierda = False
+        self.enElSuelo = False
+        self.colision_lateral_x_positiva = False
+        self.colision_lateral_x_negativa = False
+
         global background_x
         global jugador
-        # jugador.rect.x += 10
+
+        variable_aumentadora_sprite = 0
+        for sprite in grupos_sprite_piso:
+            if jugador.rect.colliderect(sprite.rect):
+                self.GRAVEDAD = 0
+                self.enElSuelo = True
+
+
+            if variable_aumentadora_sprite > 6:
+                variable_aumentadora_sprite = 0
+            #
+            if jugador.rect.colliderect(grupos_sprite_piso[0 + variable_aumentadora_sprite]) and jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite + 1]):
+                self.colision_lateral_x_positiva = True
+            variable_aumentadora_sprite += 1
+            #
         key = pygame.key.get_pressed()
-        if key[pygame.K_d]:
+        if key[pygame.K_d] and not self.colision_lateral_x_positiva:
             background_x -= 10
             jugador.correr_derecha()
-            # if izquierda.left < 0:
             if derecha.right > ANCHO + 5:
-                for sprite in prueba:
+                for sprite in sprites_piso:
                     sprite.rect.x -= 10
-            # elif derecha.
-            # elif  
+            self.en_movimiento_derecha = True
 
-            # elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
-            #     for sprite in prueba:
-            #         sprite.rect.x += 10
-
-            # for sprite in prueba:
-            #    sprite.rect.x -= 10
-            self.en_movimiento = True
-            # self.movimimiento_piso.rect.x -= 10
-            print("$$$".center(50, "_"))
-            print(background_x)
-            print(f"derecha: {derecha.right}")
-            print(f"izquierda: {izquierda.left}")
-            
-
-            # jugador.rect.x += 10
             
             
 
-        if key[pygame.K_a]:
+        if key[pygame.K_a] and not self.colision_lateral_x_negativa:
             background_x += 10
             jugador.correr_izquierda()
             self.en_movimiento_izquierda = True
             if izquierda.left > 0:
-                for sprite in prueba:
+                for sprite in sprites_piso:
                     sprite.rect.x += 10
             elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
-                for sprite in prueba:
+                for sprite in sprites_piso:
                     sprite.rect.x += 10
-            #
-            # if derecha.right > FONDO_ALTO:
-            #             # sprite.rect.x -=10
-            #     for sprite in prueba:
-            #         sprite.rect.x -= 10
-            # elif derecha.right < FONDO_ALTO:
-            #     for sprite in prueba:
-            #         sprite.rect.x -= 0
 
+        if key[pygame.K_w] and self.enElSuelo:
+            print("hola mundo")
+            for _ in range(10):
+                self.GRAVEDAD -= 9.8
 
-            print("#".center(50, '-'))
-            print(f"derecha: {derecha.left}")
-            print(f"izquierda: {izquierda.left}")
             
 
-        if not self.en_movimiento and not self.en_movimiento_izquierda:
+        if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo:
             jugador.quieto()
+
+
+
+        jugador.rect.y += self.GRAVEDAD
+
+            
 
         
         if background_x > 0:
             background_x = 0
 
-        # Limite derecho del fondo (no se desplaza más allá del borde derecho de la imagen de fondo)
         limite_derecho = FONDO_ANCHO - ANCHO
         if background_x < -limite_derecho:
             background_x = -limite_derecho
 
-# class Pisos_sprite(pygame.sprite.Sprite):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def update(self):
-#         pass
-#     
-#     def piso(self, x, y, ruta_sprite):
-#         self.image = pygame.image.load(ruta_sprite).convert()
-#         self.rect = self.image.get_rect()
-#         self.rect.left = x
-#         self.rect.bottom = y
 
 def pisos():
         imagen_piso1 = '../recursos/imagenes/Alvidapiso1.jpg'
@@ -174,6 +157,9 @@ def pisos():
 
         return sprites_piso, piso_1.rect, piso_8.rect
 
+    # def colisiones_y(self):
+
+
 
 if __name__ == "__main__":
 
@@ -182,9 +168,11 @@ if __name__ == "__main__":
     pantalla1 = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption('Level: 01')
     imagen_fondo = pygame.image.load('../recursos/imagenes/alvidabarcodentro.jpg')
-    prueba, izquierda, derecha = pisos()
+    sprites_piso, izquierda, derecha = pisos()
+    grupos_sprite_piso = sprites_piso.sprites()
     nivel1 = Alvidalevel()
     jugador = Jugador()
+    # jugador_imagen = jugador.imagen_rect()
     luffy = pygame.sprite.Group()
     luffy.add(jugador)
     while nivel1:
@@ -196,14 +184,9 @@ if __name__ == "__main__":
         pantalla1.blit(imagen_fondo, (background_x, 0))
         # pantalla1.fill(NEGRO)
         alvida = Alvidalevel()
-        # piso = pisos()
-        # piso.update()
-        # piso.draw(pantalla1)
-        # pruena = pisos()
-        prueba.update()
-        prueba.draw(pantalla1)
+        sprites_piso.update()
+        sprites_piso.draw(pantalla1)
         alvida.update()
-        # alvida.pisos()
         luffy.draw(pantalla1)
         luffy.update()
         pygame.display.flip()

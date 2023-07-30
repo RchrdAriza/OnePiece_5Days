@@ -17,7 +17,7 @@ VERDE = (0, 255, 0)
 AZUL = (0,0, 255)
 AZUL2 = (64, 64, 255)
 H_50D2FE = (94, 210, 254)
-
+# GRAVEDAD = 1
 # BACKGROUND_X = 0
 
 class Jugador(pygame.sprite.Sprite):
@@ -27,8 +27,11 @@ class Jugador(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 110))
         self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
-        self.rect.center = (200, 500)
+        # self.rect.center = (0, 500)
+        self.rect.x = 0
         self.posicion_x = 0
+        self.salto_altura = 0
+        self.gravedad = 1
 
         self.correr_lista = [pygame.image.load("../recursos/imagenes/Run1.png"),
                              pygame.image.load("../recursos/imagenes/Run2.png"),
@@ -49,13 +52,13 @@ class Jugador(pygame.sprite.Sprite):
         self.indice_correr = 0
         self.indice_demasiado_quieto = 0
         self.velocidad_secuencia_demasiado_quieto = 5
-        self.velocidad_correr = 4
+        self.velocidad_correr = 3
         self.movimiento_derecha = False
         self.movimiento_izquierda = False
         self.tiempo_inicial = time.time()
 
     def update(self):
-        pass
+        pass 
 
         # self.posicion_x = 0
 
@@ -128,6 +131,26 @@ class Jugador(pygame.sprite.Sprite):
     #         self.image.set_colorkey(NEGRO)
     #         self.indice_demasiado_quieto += 1
     #         tiempo_transcurrido = 0
+
+    def quieto_volteado(self):
+            quieto_img = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 130))
+            quieto_img_volteado = pygame.transform.flip(quieto_img, True, False)
+            quieto_img_volteado.set_colorkey(NEGRO)
+            self.image = quieto_img_volteado
+
+
+    # def imagen_rect(self):
+    #     return self.rect
+
+    def saltar(self):
+        # self.velocidad = velocidad
+        # self.altura = altura
+        # self.altura += velocidad
+        # self.rect.y -= self.altura
+        self.rect.y -= 100
+
+
+
 
 
 
