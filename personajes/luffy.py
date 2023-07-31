@@ -1,5 +1,5 @@
 import pygame, time
-from pygame.locals import *
+# from pygame.locals import *
 
 ANCHO = 800
 ALTO = 600
@@ -49,10 +49,21 @@ class Jugador(pygame.sprite.Sprite):
                                         pygame.image.load('../recursos/imagenes/Demasiadoquieto4.png'),
                                         pygame.image.load('../recursos/imagenes/Demasiadoquieto5.png'),]
 
+        # Salto
+
+        self.salto_secuencia  = [pygame.image.load('../recursos/imagenes/Salto1.png'),
+                                 pygame.image.load('../recursos/imagenes/Salto2.png'),
+                                 pygame.image.load('../recursos/imagenes/Salto3.png'),
+                                 pygame.image.load('../recursos/imagenes/Salto4.png'),]
+
+
         self.indice_correr = 0
         self.indice_demasiado_quieto = 0
         self.velocidad_secuencia_demasiado_quieto = 5
         self.velocidad_correr = 3
+
+        self.velocidad_salto = 40
+        self.indice_salto = 0
         self.movimiento_derecha = False
         self.movimiento_izquierda = False
         self.tiempo_inicial = time.time()
@@ -91,8 +102,6 @@ class Jugador(pygame.sprite.Sprite):
     # else:
     #     self.movimiento_derecha = False
     def correr_izquierda(self):
-    # if teclas[pygame.K_a]:
-        # self.posicion_x -= 10
         if self.indice_correr == len(self.correr_lista) * self.velocidad_correr:
             self.indice_correr = 0
         imagen_actual = self.correr_lista[self.indice_correr // self.velocidad_correr]
@@ -114,23 +123,11 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.right = ANCHO
 
 
-    # else:
-    #     # self.posicion_x = 0
-    #     self.movimiento_izquierda = False
     #
     def quieto(self):
-        # if not self.movimiento_derecha and not self.movimiento_izquierda:
         quieto_img = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 130))
         quieto_img.set_colorkey(NEGRO)
         self.image = quieto_img
-    #     if tiempo_transcurrido > 5:
-    #         if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto:
-    #             self.indice_demasiado_quieto = 0
-    #         imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto]
-    #         self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110))
-    #         self.image.set_colorkey(NEGRO)
-    #         self.indice_demasiado_quieto += 1
-    #         tiempo_transcurrido = 0
 
     def quieto_volteado(self):
             quieto_img = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 130))
@@ -139,19 +136,38 @@ class Jugador(pygame.sprite.Sprite):
             self.image = quieto_img_volteado
 
 
-    # def imagen_rect(self):
-    #     return self.rect
 
     def saltar(self):
-        # self.velocidad = velocidad
-        # self.altura = altura
-        # self.altura += velocidad
-        # self.rect.y -= self.altura
-        self.rect.y -= 100
+        # salto_animacion = pygame.transform.scale()
+        # for _ in range(3):
+        # self.rect = self.image.get_rect()
+        for _ in range(10):
+            self.rect.y -= 9.8
+            
+        print("hello world")
+    
+    def durante_el_salto(self):
+
+        if self.indice_salto == len(self.salto_secuencia) * self.velocidad_salto:
+            self.indice_salto = 0
+        imagen_actual = self.salto_secuencia[self.indice_salto // self.velocidad_salto]
 
 
+        # Actualizar la imagen del jugador
+        self.image = pygame.transform.scale(imagen_actual, (90, 110))
+        self.image.set_colorkey(NEGRO)
 
+        self.indice_salto += 1
 
+    def demasiado_quieto(self):
+
+             if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto: 
+                 self.indice_demasiado_quieto = 0 
+             imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto] 
+             self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110)) 
+             self.image.set_colorkey(NEGRO) 
+
+             self.indice_demasiado_quieto += 1 
 
 
 

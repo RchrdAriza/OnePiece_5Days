@@ -22,6 +22,7 @@ AZUL2 = (64, 64, 255)
 H_50D2FE = (94, 210, 254)
 
 background_x = 0
+inactividad = 0
 # en_movimiento = False
 
 class Alvidalevel(pygame.sprite.Sprite):
@@ -29,6 +30,7 @@ class Alvidalevel(pygame.sprite.Sprite):
         super().__init__()
         self.GRAVEDAD = 9.8
         self.velocidad_caida = 0
+        self.contador_inactividad = 1
 
     def update(self):
         self.en_movimiento_derecha = False
@@ -38,6 +40,7 @@ class Alvidalevel(pygame.sprite.Sprite):
         self.colision_lateral_x_negativa = False
 
         global background_x
+        global inactividad
         global jugador
 
         variable_aumentadora_sprite = 0
@@ -45,12 +48,13 @@ class Alvidalevel(pygame.sprite.Sprite):
             if jugador.rect.colliderect(sprite.rect):
                 self.GRAVEDAD = 0
                 self.enElSuelo = True
+                # print(self.enElSuelo)
 
 
             if variable_aumentadora_sprite > 6:
                 variable_aumentadora_sprite = 0
             #
-            if jugador.rect.colliderect(grupos_sprite_piso[0 + variable_aumentadora_sprite]) and jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite + 1]):
+            if jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite]) and jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite + 1]):
                 self.colision_lateral_x_positiva = True
             variable_aumentadora_sprite += 1
             #
@@ -62,6 +66,7 @@ class Alvidalevel(pygame.sprite.Sprite):
                 for sprite in sprites_piso:
                     sprite.rect.x -= 10
             self.en_movimiento_derecha = True
+            inactividad = 0
 
             
             
@@ -76,16 +81,27 @@ class Alvidalevel(pygame.sprite.Sprite):
             elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
                 for sprite in sprites_piso:
                     sprite.rect.x += 10
+            inactividad = 0
 
         if key[pygame.K_w] and self.enElSuelo:
-            print("hola mundo")
-            for _ in range(10):
-                self.GRAVEDAD -= 9.8
+            # print("hola mundo")
+            jugador.rect.x -= 5
+            jugador.saltar()
+            inactividad = 0
+
+        if not self.enElSuelo:
+            jugador.durante_el_salto()
+
 
             
 
         if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo:
-            jugador.quieto()
+            if inactividad < 500:
+                jugador.quieto()
+            else:
+                jugador.demasiado_quieto()
+            print(inactividad)
+
 
 
 
@@ -93,7 +109,7 @@ class Alvidalevel(pygame.sprite.Sprite):
 
             
 
-        
+        inactividad += self.contador_inactividad
         if background_x > 0:
             background_x = 0
 
@@ -157,7 +173,6 @@ def pisos():
 
         return sprites_piso, piso_1.rect, piso_8.rect
 
-    # def colisiones_y(self):
 
 
 
