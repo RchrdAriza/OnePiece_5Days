@@ -22,7 +22,9 @@ AZUL2 = (64, 64, 255)
 H_50D2FE = (94, 210, 254)
 
 background_x = 0
-inactividad = 0
+INACTIVIDAD = 0
+VOLTEADO = False
+
 # en_movimiento = False
 
 class Alvidalevel(pygame.sprite.Sprite):
@@ -38,27 +40,96 @@ class Alvidalevel(pygame.sprite.Sprite):
         self.enElSuelo = False
         self.colision_lateral_x_positiva = False
         self.colision_lateral_x_negativa = False
+        self.atacando = False
 
         global background_x
-        global inactividad
+        global INACTIVIDAD
         global jugador
+        global VOLTEADO
 
         variable_aumentadora_sprite = 0
+        # jugador_top = jugador.rect.midtop
+        jugador_right = jugador.rect.midright
+        jugador_bottom = jugador.rect.midbottom
+        jugador_left = jugador.rect.midleft
+
+        # piso_top = grupos_sprite_piso[0].rect.midtop
+        # piso_right = grupos_sprite_piso[0].rect.midright
+        # piso_left = grupos_sprite_piso[0].rect.midleft
+
+        piso1_top = grupos_sprite_piso[1].rect.midtop
+        piso1_right = grupos_sprite_piso[1].rect.midright
+        piso1_left = grupos_sprite_piso[1].rect.midleft
+
+        piso2_top = grupos_sprite_piso[2].rect.midtop
+        piso2_right = grupos_sprite_piso[2].rect.midright
+        piso2_left = grupos_sprite_piso[2].rect.midleft
+        
+        piso3_top = grupos_sprite_piso[3].rect.midtop
+        piso3_right = grupos_sprite_piso[3].rect.midright
+        piso3_left = grupos_sprite_piso[3].rect.midleft
+
+        piso4_top = grupos_sprite_piso[4].rect.midtop
+        piso4_right = grupos_sprite_piso[4].rect.midright
+        piso4_left = grupos_sprite_piso[4].rect.midleft
+        
+        piso5_top = grupos_sprite_piso[5].rect.midtop
+        piso5_right = grupos_sprite_piso[5].rect.midright
+        piso5_left = grupos_sprite_piso[5].rect.midleft
+        
+        piso6_top = grupos_sprite_piso[6].rect.midtop
+        piso6_right = grupos_sprite_piso[6].rect.midright
+        piso6_left = grupos_sprite_piso[6].rect.midleft
+        
+        piso7_top = grupos_sprite_piso[7].rect.midtop
+        piso7_right = grupos_sprite_piso[7].rect.midright
+        piso7_left = grupos_sprite_piso[7].rect.midleft
+
+
         for sprite in grupos_sprite_piso:
-            if jugador.rect.colliderect(sprite.rect):
+            # if jugador.rect.colliderect(sprite.rect):
+            #     self.GRAVEDAD = 0
+            #     self.enElSuelo = True
+            #     # print(self.enElSuelo)
+            # if not self.enElSuelo:
+            #     jugador.durante_el_salto()
+            #
+            # if jugador.rect.colliderect(grupos_sprite_piso[7])
+            #     jugador.rect.x -= 0
+            #     # print("himalaya")
+
+            # if not self.enElSuelo:
+            #     if jugador.rect.colliderect(sprite.rect):
+            #         jugador.rect.x -= 50
+            #         print("prueba colision")
+            if sprite.rect.collidepoint(jugador_bottom):
                 self.GRAVEDAD = 0
                 self.enElSuelo = True
-                # print(self.enElSuelo)
+                # print("wasaaaap")
+
+            if not self.enElSuelo:
+                jugador.durante_el_salto()
+                # print("Vaya")
 
 
             if variable_aumentadora_sprite > 6:
                 variable_aumentadora_sprite = 0
             #
             if jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite]) and jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite + 1]):
+                # jugador.rect.x -= 1
                 self.colision_lateral_x_positiva = True
             variable_aumentadora_sprite += 1
             #
         key = pygame.key.get_pressed()
+        
+        if key[pygame.K_x]:
+            # print("atacando")
+            # for _ in range(4):
+            jugador.primer_ataque()
+            self.atacando = True
+            INACTIVIDAD = 0
+        
+
         if key[pygame.K_d] and not self.colision_lateral_x_positiva:
             background_x -= 10
             jugador.correr_derecha()
@@ -66,10 +137,8 @@ class Alvidalevel(pygame.sprite.Sprite):
                 for sprite in sprites_piso:
                     sprite.rect.x -= 10
             self.en_movimiento_derecha = True
-            inactividad = 0
-
-            
-            
+            INACTIVIDAD = 0
+            VOLTEADO = False
 
         if key[pygame.K_a] and not self.colision_lateral_x_negativa:
             background_x += 10
@@ -81,35 +150,40 @@ class Alvidalevel(pygame.sprite.Sprite):
             elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
                 for sprite in sprites_piso:
                     sprite.rect.x += 10
-            inactividad = 0
+            INACTIVIDAD = 0
+            VOLTEADO = True
 
         if key[pygame.K_w] and self.enElSuelo:
             # print("hola mundo")
-            jugador.rect.x -= 5
+            # jugador.rect.x -= 5
             jugador.saltar()
-            inactividad = 0
+            INACTIVIDAD = 0
 
-        if not self.enElSuelo:
-            jugador.durante_el_salto()
+
 
 
             
 
-        if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo:
-            if inactividad < 500:
+        if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and not VOLTEADO and not self.atacando:
+            if INACTIVIDAD < 500:
                 jugador.quieto()
             else:
                 jugador.demasiado_quieto()
-            print(inactividad)
+            # print(INACTIVIDAD)
 
 
+        if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and VOLTEADO and not self.atacando:
+            if INACTIVIDAD < 500:
+                jugador.quieto_volteado()
+            else:
+                jugador.demasiado_quieto()
 
 
         jugador.rect.y += self.GRAVEDAD
 
             
 
-        inactividad += self.contador_inactividad
+        INACTIVIDAD += self.contador_inactividad
         if background_x > 0:
             background_x = 0
 

@@ -24,7 +24,7 @@ class Jugador(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 110))
+        self.image = pygame.image.load('../recursos/imagenes/quieto.png').convert()
         self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
         # self.rect.center = (0, 500)
@@ -56,17 +56,33 @@ class Jugador(pygame.sprite.Sprite):
                                  pygame.image.load('../recursos/imagenes/Salto3.png'),
                                  pygame.image.load('../recursos/imagenes/Salto4.png'),]
 
+        # Primer_ataque
 
+        self.primer_ataque_secuencia = [pygame.image.load('../recursos/imagenes/Primerataque1.png'),
+                                        pygame.image.load('../recursos/imagenes/Primerataque2.png'),
+                                        pygame.image.load('../recursos/imagenes/Primerataque3.png'),
+                                        pygame.image.load('../recursos/imagenes/Primerataque4.png'),]
+        
+        # correr
         self.indice_correr = 0
+        self.velocidad_correr = 3
+        
+        # demasiado_quieto
         self.indice_demasiado_quieto = 0
         self.velocidad_secuencia_demasiado_quieto = 5
-        self.velocidad_correr = 3
 
+        # Salto
         self.velocidad_salto = 40
         self.indice_salto = 0
+
+        # Movimiento
         self.movimiento_derecha = False
         self.movimiento_izquierda = False
-        self.tiempo_inicial = time.time()
+        # self.tiempo_inicial = time.time()
+
+        # primer ataque
+        self.velocidad_secuencia_primer_ataque = 3
+        self.indice_primer_ataque = 0
 
     def update(self):
         pass 
@@ -78,8 +94,6 @@ class Jugador(pygame.sprite.Sprite):
     
     # teclas = pygame.key.get_pressed()
     def correr_derecha(self):
-        # global teclas
-        # if teclas[pygame.K_d]:
         self.indice_correr += 1
         if self.indice_correr == len(self.correr_lista) * self.velocidad_correr:
             self.indice_correr = 0
@@ -87,7 +101,8 @@ class Jugador(pygame.sprite.Sprite):
 
 
         # Actualizar la imagen del jugador
-        self.image = pygame.transform.scale(imagen_actual, (90, 110))
+        # self.image = pygame.transform.scale(imagen_actual, (90, 110))
+        self.image = imagen_actual
         self.image.set_colorkey(NEGRO)
         # self.posicion_x += 10
         self.rect.x += 5
@@ -109,7 +124,8 @@ class Jugador(pygame.sprite.Sprite):
 
 
         # Actualizar la imagen del jugador
-        self.image = pygame.transform.scale(imagen_volteada_horizontalmente, (90, 110))
+        # self.image = pygame.transform.scale(imagen_volteada_horizontalmente, (90, 110))
+        self.image = imagen_volteada_horizontalmente
         self.image.set_colorkey(NEGRO)
         # self.posicion_x += 10
         self.rect.x -= 5
@@ -125,12 +141,12 @@ class Jugador(pygame.sprite.Sprite):
 
     #
     def quieto(self):
-        quieto_img = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 130))
+        quieto_img = pygame.image.load('../recursos/imagenes/quieto.png').convert()
         quieto_img.set_colorkey(NEGRO)
         self.image = quieto_img
 
     def quieto_volteado(self):
-            quieto_img = pygame.transform.scale(pygame.image.load('../recursos/imagenes/quieto.png').convert(), (90, 130))
+            quieto_img = pygame.image.load('../recursos/imagenes/quieto.png').convert()
             quieto_img_volteado = pygame.transform.flip(quieto_img, True, False)
             quieto_img_volteado.set_colorkey(NEGRO)
             self.image = quieto_img_volteado
@@ -144,7 +160,7 @@ class Jugador(pygame.sprite.Sprite):
         for _ in range(10):
             self.rect.y -= 9.8
             
-        print("hello world")
+        # print("hello world")
     
     def durante_el_salto(self):
 
@@ -169,6 +185,18 @@ class Jugador(pygame.sprite.Sprite):
 
              self.indice_demasiado_quieto += 1 
 
+    def primer_ataque(self):
+        
+        # self.indice_primer_ataque += 1
+        if self.indice_primer_ataque == len(self.primer_ataque_secuencia) * self.velocidad_secuencia_primer_ataque:
+            self.indice_primer_ataque = 0
+        imagen_actual = self.primer_ataque_secuencia[self.indice_primer_ataque // self.velocidad_secuencia_primer_ataque]
+
+        self.image = imagen_actual
+        # self.image = pygame.transform.scale(imagen_actual, (90, 110)) 
+        self.image.set_colorkey(NEGRO)
+        self.indice_primer_ataque += 1
+
 
 
 #
@@ -176,15 +204,15 @@ class Jugador(pygame.sprite.Sprite):
 if __name__ == "__main__":
     
     pygame.init()
-    # pantalla = pygame.display.set_mode((ANCHO, ALTO))
-    # pygame.display.set_caption('One piece 5-Days')
+    pantalla = pygame.display.set_mode((ANCHO, ALTO))
+    pygame.display.set_caption('One piece 5-Days')
     clock = pygame.time.Clock()
     #
-    # jugador = Jugador()
-    #
-    # luffy = pygame.sprite.Group()
-    #
-    # luffy.add(jugador)
+    jugador = Jugador()
+
+    luffy = pygame.sprite.Group()
+
+    luffy.add(jugador)
     #
     #
     jugando = True
@@ -194,10 +222,10 @@ if __name__ == "__main__":
             if evento.type == pygame.QUIT:
                 jugando = False
 
-        # pantalla.fill(NEGRO)
-        # luffy.update()
-        # luffy.draw(pantalla)
-        # pygame.display.flip()
+        pantalla.fill(NEGRO)
+        luffy.update()
+        luffy.draw(pantalla)
+        pygame.display.flip()
 
     pygame.quit
     #
