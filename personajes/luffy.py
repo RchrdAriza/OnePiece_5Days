@@ -24,7 +24,7 @@ class Jugador(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load('../recursos/imagenes/quieto.png').convert()
+        self.image = pygame.image.load('recursos/imagenes/quieto.png').convert()
         self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
         # self.rect.center = (0, 500)
@@ -33,35 +33,35 @@ class Jugador(pygame.sprite.Sprite):
         self.salto_altura = 0
         self.gravedad = 1
 
-        self.correr_lista = [pygame.image.load("../recursos/imagenes/Run1.png"),
-                             pygame.image.load("../recursos/imagenes/Run2.png"),
-                             pygame.image.load("../recursos/imagenes/Run3.png"),
-                             pygame.image.load("../recursos/imagenes/Run4.png"),
-                             pygame.image.load("../recursos/imagenes/Run5.png"),
-                             pygame.image.load("../recursos/imagenes/Run6.png"),
-                             pygame.image.load("../recursos/imagenes/Run7.png"),
-                             pygame.image.load("../recursos/imagenes/Run8.png"),]
+        self.correr_lista = [pygame.image.load("recursos/imagenes/Run1.png"),
+                             pygame.image.load("recursos/imagenes/Run2.png"),
+                             pygame.image.load("recursos/imagenes/Run3.png"),
+                             pygame.image.load("recursos/imagenes/Run4.png"),
+                             pygame.image.load("recursos/imagenes/Run5.png"),
+                             pygame.image.load("recursos/imagenes/Run6.png"),
+                             pygame.image.load("recursos/imagenes/Run7.png"),
+                             pygame.image.load("recursos/imagenes/Run8.png"),]
         # quedarse dormido
 
-        self.demasiado_quieto_secuencia = [pygame.image.load('../recursos/imagenes/Demasiadoquieto1.png'),
-                                        pygame.image.load('../recursos/imagenes/Demasiadoquieto2.png'),
-                                        pygame.image.load('../recursos/imagenes/Demasiadoquieto3.png'),
-                                        pygame.image.load('../recursos/imagenes/Demasiadoquieto4.png'),
-                                        pygame.image.load('../recursos/imagenes/Demasiadoquieto5.png'),]
+        self.demasiado_quieto_secuencia = [pygame.image.load('recursos/imagenes/Demasiadoquieto1.png'),
+                                        pygame.image.load('recursos/imagenes/Demasiadoquieto2.png'),
+                                        pygame.image.load('recursos/imagenes/Demasiadoquieto3.png'),
+                                        pygame.image.load('recursos/imagenes/Demasiadoquieto4.png'),
+                                        pygame.image.load('recursos/imagenes/Demasiadoquieto5.png'),]
 
         # Salto
 
-        self.salto_secuencia  = [pygame.image.load('../recursos/imagenes/Salto1.png'),
-                                 pygame.image.load('../recursos/imagenes/Salto2.png'),
-                                 pygame.image.load('../recursos/imagenes/Salto3.png'),
-                                 pygame.image.load('../recursos/imagenes/Salto4.png'),]
+        self.salto_secuencia  = [pygame.image.load('recursos/imagenes/Salto1.png'),
+                                 pygame.image.load('recursos/imagenes/Salto2.png'),
+                                 pygame.image.load('recursos/imagenes/Salto3.png'),
+                                 pygame.image.load('recursos/imagenes/Salto4.png'),]
 
         # Primer_ataque
 
-        self.primer_ataque_secuencia = [pygame.image.load('../recursos/imagenes/Primerataque1.png'),
-                                        pygame.image.load('../recursos/imagenes/Primerataque2.png'),
-                                        pygame.image.load('../recursos/imagenes/Primerataque3.png'),
-                                        pygame.image.load('../recursos/imagenes/Primerataque4.png'),]
+        self.primer_ataque_secuencia = [pygame.image.load('recursos/imagenes/Primerataque1.png'),
+                                        pygame.image.load('recursos/imagenes/Primerataque2.png'),
+                                        pygame.image.load('recursos/imagenes/Primerataque3.png'),
+                                        pygame.image.load('recursos/imagenes/Primerataque4.png'),]
         
         # correr
         self.indice_correr = 0
@@ -105,7 +105,7 @@ class Jugador(pygame.sprite.Sprite):
         self.image = imagen_actual
         self.image.set_colorkey(NEGRO)
         # self.posicion_x += 10
-        self.rect.x += 5
+        self.rect.x += 4
         # self.movimiento_derecha = True
         if self.rect.left < 0:
             self.rect.left = 0
@@ -128,7 +128,7 @@ class Jugador(pygame.sprite.Sprite):
         self.image = imagen_volteada_horizontalmente
         self.image.set_colorkey(NEGRO)
         # self.posicion_x += 10
-        self.rect.x -= 5
+        self.rect.x -= 4
         self.movimiento_izquierda = True
         self.indice_correr += 1
         
@@ -141,12 +141,12 @@ class Jugador(pygame.sprite.Sprite):
 
     #
     def quieto(self):
-        quieto_img = pygame.image.load('../recursos/imagenes/quieto.png').convert()
+        quieto_img = pygame.image.load('recursos/imagenes/quieto.png').convert()
         quieto_img.set_colorkey(NEGRO)
         self.image = quieto_img
 
     def quieto_volteado(self):
-            quieto_img = pygame.image.load('../recursos/imagenes/quieto.png').convert()
+            quieto_img = pygame.image.load('recursos/imagenes/quieto.png').convert()
             quieto_img_volteado = pygame.transform.flip(quieto_img, True, False)
             quieto_img_volteado.set_colorkey(NEGRO)
             self.image = quieto_img_volteado

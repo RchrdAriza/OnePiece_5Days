@@ -4,7 +4,7 @@ import pygame
 from personajes.luffy import Jugador
 from .pisos_sprites import Piso
 from .obtaculos_y_enemigos.objectos_sprites import Objecto
-from .nivel2 import main1
+
 FONDO_ANCHO = 2738
 FONDO_ALTO = 600
 
@@ -241,7 +241,7 @@ grupos_sprite_piso = None
 
 jugador = None
 
-def main():
+def main1():
     global sprites_piso, izquierda, derecha, jugador, grupos_sprite_piso, sprite_objectos
 
     clock = pygame.time.Clock()
@@ -280,7 +280,6 @@ def main():
             notificaciones_sprite.draw(pantalla1)
             if keys[pygame.K_UP]:
                 print("mama gallo")
-                main1()
         
         luffy.draw(pantalla1)
         luffy.update()

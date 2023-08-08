@@ -3,8 +3,7 @@ import pygame
 # sys.path.append("..")
 from personajes.luffy import Jugador
 from .pisos_sprites import Piso
-from .obtaculos_y_enemigos.objectos_sprites import Objecto
-from .nivel2 import main1
+
 FONDO_ANCHO = 2738
 FONDO_ALTO = 600
 
@@ -73,11 +72,7 @@ class Alvidalevel(pygame.sprite.Sprite):
                 # jugador.rect.x -= 1
                 self.colision_lateral_x_positiva = True
             variable_aumentadora_sprite += 1
-        
-        for objecto in sprite_objectos:
-            pass
-
-
+            #
         key = pygame.key.get_pressed()
         
         if key[pygame.K_x]:
@@ -95,8 +90,6 @@ class Alvidalevel(pygame.sprite.Sprite):
                 for sprite in sprites_piso:
                     sprite.rect.x -= 10
             self.en_movimiento_derecha = True
-            for objectos in sprite_objectos:
-                objectos.rect.x -= 10
             INACTIVIDAD = 0
             VOLTEADO = False
 
@@ -110,8 +103,6 @@ class Alvidalevel(pygame.sprite.Sprite):
             elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
                 for sprite in sprites_piso:
                     sprite.rect.x += 10
-            for objectos in sprite_objectos:
-                objectos.rect.x += 10
             INACTIVIDAD = 0
             VOLTEADO = True
 
@@ -140,7 +131,7 @@ class Alvidalevel(pygame.sprite.Sprite):
             else:
                 jugador.demasiado_quieto()
 
-        
+
         jugador.rect.y += self.GRAVEDAD
 
             
@@ -209,32 +200,9 @@ def pisos():
 
         return sprites_piso, piso_1.rect, piso_8.rect
 
-def objetos():
-    puerta = Objecto()
-    imagen_puerta = 'recursos/imagenes/Puerta1.png'
-    puerta.objecto(240, 400 - 150, imagen_puerta)
-
-    sprite_objectos = pygame.sprite.Group()
-
-    sprite_objectos.add(puerta)
-
-    return sprite_objectos
-
-def Notificaciones():
-    x = Objecto()
-    imagen_x = ['recursos/imagenes/Pressup1.png']
-    x.objecto(ANCHO - 170, 15, imagen_x)
-
-    notificaciones_sprite = pygame.sprite.Group()
-
-    notificaciones_sprite.add(x)
-
-    return notificaciones_sprite
 
 
-sprite_objectos = None
-# grupo_sprite_objectos = None
-notificaciones_sprite = None
+
 
 sprites_piso, izquierda, derecha = None, None, None
 grupos_sprite_piso = None
@@ -242,7 +210,7 @@ grupos_sprite_piso = None
 jugador = None
 
 def main():
-    global sprites_piso, izquierda, derecha, jugador, grupos_sprite_piso, sprite_objectos
+    global sprites_piso, izquierda, derecha, jugador, grupos_sprite_piso
 
     clock = pygame.time.Clock()
     pantalla1 = pygame.display.set_mode((ANCHO, ALTO))
@@ -252,9 +220,6 @@ def main():
     # jugador_imagen = jugador.imagen_rect()
     sprites_piso, izquierda, derecha = pisos() 
     grupos_sprite_piso = sprites_piso.sprites() 
-    sprite_objectos = objetos()
-    notificaciones_sprite = Notificaciones()
-    # grupo_sprite_objectos = sprite_objectos()
     jugador = Jugador() 
     luffy = pygame.sprite.Group()
     luffy.add(jugador)
@@ -269,18 +234,6 @@ def main():
         # pantalla1.fill(NEGRO)
         sprites_piso.update()
         sprites_piso.draw(pantalla1)
-
-        sprite_objectos.update()
-        sprite_objectos.draw(pantalla1)
-
-        keys = pygame.key.get_pressed()
-        if pygame.sprite.groupcollide(luffy, sprite_objectos, False, False):
-            # print("Hello world")
-            notificaciones_sprite.update()
-            notificaciones_sprite.draw(pantalla1)
-            if keys[pygame.K_UP]:
-                print("mama gallo")
-                main1()
         
         luffy.draw(pantalla1)
         luffy.update()
@@ -295,5 +248,4 @@ def main():
  
 if __name__ == "__main__":
     main()
-
 
