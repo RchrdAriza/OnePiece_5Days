@@ -62,17 +62,17 @@ class Jugador(pygame.sprite.Sprite):
                                         pygame.image.load('recursos/imagenes/Primerataque2.png'),
                                         pygame.image.load('recursos/imagenes/Primerataque3.png'),
                                         pygame.image.load('recursos/imagenes/Primerataque4.png'),]
-        
+
         # correr
         self.indice_correr = 0
         self.velocidad_correr = 3
-        
+
         # demasiado_quieto
         self.indice_demasiado_quieto = 0
         self.velocidad_secuencia_demasiado_quieto = 5
 
         # Salto
-        self.velocidad_salto = 40
+        self.velocidad_salto = 5
         self.indice_salto = 0
 
         # Movimiento
@@ -85,13 +85,13 @@ class Jugador(pygame.sprite.Sprite):
         self.indice_primer_ataque = 0
 
     def update(self):
-        pass 
+        pass
 
         # self.posicion_x = 0
 
     # tiempo_transcurrido = time.time() - self.tiempo_inicial
     global BACKGROUND_X
-    
+
     # teclas = pygame.key.get_pressed()
     def correr_derecha(self):
         self.indice_correr += 1
@@ -131,7 +131,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.x -= 4
         self.movimiento_izquierda = True
         self.indice_correr += 1
-        
+
         if self.rect.left < 0:
             self.rect.left = 0
 
@@ -159,10 +159,10 @@ class Jugador(pygame.sprite.Sprite):
         # self.rect = self.image.get_rect()
         for _ in range(10):
             self.rect.y -= 9.8
-            
+
         # print("hello world")
-    
-    def durante_el_salto(self):
+
+    def enElAire(self):
 
         if self.indice_salto == len(self.salto_secuencia) * self.velocidad_salto:
             self.indice_salto = 0
@@ -177,23 +177,23 @@ class Jugador(pygame.sprite.Sprite):
 
     def demasiado_quieto(self):
 
-             if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto: 
-                 self.indice_demasiado_quieto = 0 
-             imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto] 
-             self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110)) 
-             self.image.set_colorkey(NEGRO) 
+             if self.indice_demasiado_quieto == len(self.demasiado_quieto_secuencia) * self.velocidad_secuencia_demasiado_quieto:
+                 self.indice_demasiado_quieto = 0
+             imagen_demasiado_quieto = self.demasiado_quieto_secuencia[self.indice_demasiado_quieto // self.velocidad_secuencia_demasiado_quieto]
+             self.image = pygame.transform.scale(imagen_demasiado_quieto, (90, 110))
+             self.image.set_colorkey(NEGRO)
 
-             self.indice_demasiado_quieto += 1 
+             self.indice_demasiado_quieto += 1
 
     def primer_ataque(self):
-        
+
         # self.indice_primer_ataque += 1
         if self.indice_primer_ataque == len(self.primer_ataque_secuencia) * self.velocidad_secuencia_primer_ataque:
             self.indice_primer_ataque = 0
         imagen_actual = self.primer_ataque_secuencia[self.indice_primer_ataque // self.velocidad_secuencia_primer_ataque]
 
         self.image = imagen_actual
-        # self.image = pygame.transform.scale(imagen_actual, (90, 110)) 
+        # self.image = pygame.transform.scale(imagen_actual, (90, 110))
         self.image.set_colorkey(NEGRO)
         self.indice_primer_ataque += 1
 
@@ -202,7 +202,7 @@ class Jugador(pygame.sprite.Sprite):
 #
 #
 if __name__ == "__main__":
-    
+
     pygame.init()
     pantalla = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption('One piece 5-Days')
@@ -228,4 +228,3 @@ if __name__ == "__main__":
         pygame.display.flip()
 
     pygame.quit
-    #

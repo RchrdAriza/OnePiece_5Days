@@ -6,7 +6,7 @@ pygame.init()
 
 
 # Dimensiones de la ventana
-ANCHO = 800 
+ANCHO = 800
 ALTO = 600
 
 # Colores
@@ -49,7 +49,7 @@ def mostrar_menu():
             mostrar_texto(opcion, fuente, color, ANCHO // 2 - 50, ALTO // 2 + i * 40)
 
         pygame.display.flip()
+    pygame.quit()
 
 # Iniciar el menú
 mostrar_menu()
-
