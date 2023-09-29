@@ -3,7 +3,6 @@ import pygame
 # sys.path.append("..")
 from personajes.luffy import Jugador
 from .pisos_sprites import Piso
-from .obtaculos_y_enemigos.objectos_sprites import Objecto
 
 FONDO_ANCHO = 2688
 FONDO_ALTO = 600
@@ -18,7 +17,7 @@ BLANCO = (255, 255, 255)
 ROJO = (255, 0, 0)
 H_FA2F2F = (255, 47, 47)
 VERDE = (0, 255, 0)
-AZUL = (0,0, 255)
+AZUL = (0, 0, 255)
 AZUL2 = (64, 64, 255)
 H_50D2FE = (94, 210, 254)
 
@@ -27,6 +26,8 @@ INACTIVIDAD = 0
 VOLTEADO = False
 
 # en_movimiento = False
+
+
 class Alvidalevel(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -62,9 +63,8 @@ class Alvidalevel(pygame.sprite.Sprite):
                 # print("wasaaaap")
 
             if not self.enElSuelo:
-                jugador.durante_el_salto()
+                jugador.enElAire()
                 # print("Vaya")
-
 
             if variable_aumentadora_sprite > 6:
                 variable_aumentadora_sprite = 0
@@ -73,10 +73,6 @@ class Alvidalevel(pygame.sprite.Sprite):
                 # jugador.rect.x -= 1
                 self.colision_lateral_x_positiva = True
             variable_aumentadora_sprite += 1
-
-        for objecto in sprite_objectos:
-            pass
-
 
         key = pygame.key.get_pressed()
 
@@ -87,7 +83,6 @@ class Alvidalevel(pygame.sprite.Sprite):
             self.atacando = True
             INACTIVIDAD = 0
 
-
         if key[pygame.K_d] and not self.colision_lateral_x_positiva:
             background_x -= 10
             jugador.correr_derecha()
@@ -95,8 +90,7 @@ class Alvidalevel(pygame.sprite.Sprite):
                 for sprite in sprites_piso:
                     sprite.rect.x -= 10
             self.en_movimiento_derecha = True
-            for objectos in sprite_objectos:
-                objectos.rect.x -= 10
+
             INACTIVIDAD = 0
             VOLTEADO = False
 
@@ -110,8 +104,6 @@ class Alvidalevel(pygame.sprite.Sprite):
             elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
                 for sprite in sprites_piso:
                     sprite.rect.x += 10
-            for objectos in sprite_objectos:
-                objectos.rect.x += 10
             INACTIVIDAD = 0
             VOLTEADO = True
 
@@ -121,11 +113,6 @@ class Alvidalevel(pygame.sprite.Sprite):
             jugador.saltar()
             INACTIVIDAD = 0
 
-
-
-
-
-
         if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and not VOLTEADO and not self.atacando:
             if INACTIVIDAD < 500:
                 jugador.quieto()
@@ -133,17 +120,13 @@ class Alvidalevel(pygame.sprite.Sprite):
                 jugador.demasiado_quieto()
             # print(INACTIVIDAD)
 
-
         if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and VOLTEADO and not self.atacando:
             if INACTIVIDAD < 500:
                 jugador.quieto_volteado()
             else:
                 jugador.demasiado_quieto()
 
-
         jugador.rect.y += self.GRAVEDAD
-
-
 
         INACTIVIDAD += self.contador_inactividad
         if background_x > 0:
@@ -155,94 +138,71 @@ class Alvidalevel(pygame.sprite.Sprite):
 
 
 def pisos():
-        imagen_piso1 = 'recursos/imagenes/Piso1subnivel1.jpg'
-        imagen_piso2 = 'recursos/imagenes/Piso2subnivel1.jpg'
-        imagen_piso3 = 'recursos/imagenes/Piso3subnivel1.jpg'
-        imagen_piso4 = 'recursos/imagenes/Piso4subnivel1.jpg'
-        imagen_piso5 = 'recursos/imagenes/Piso5subnivel1.jpg'
-        imagen_piso6 = 'recursos/imagenes/Piso6subnivel1.jpg'
-        imagen_piso7 = 'recursos/imagenes/Piso7subnivel1.jpg'
-        imagen_piso8 = 'recursos/imagenes/Piso8subnivel1.jpg'
-        imagen_piso9 = 'recursos/imagenes/Piso9subnivel1.jpg'
-        imagen_piso10 = 'recursos/imagenes/Piso10subnivel1.jpg'
+    imagen_piso1 = 'recursos/imagenes/Piso1subnivel1.jpg'
+    imagen_piso2 = 'recursos/imagenes/Piso2subnivel1.jpg'
+    imagen_piso3 = 'recursos/imagenes/Piso3subnivel1.jpg'
+    imagen_piso4 = 'recursos/imagenes/Piso4subnivel1.jpg'
+    imagen_piso5 = 'recursos/imagenes/Piso5subnivel1.jpg'
+    imagen_piso6 = 'recursos/imagenes/Piso6subnivel1.jpg'
+    imagen_piso7 = 'recursos/imagenes/Piso7subnivel1.jpg'
+    imagen_piso8 = 'recursos/imagenes/Piso8subnivel1.jpg'
+    imagen_piso9 = 'recursos/imagenes/Piso9subnivel1.jpg'
+    imagen_piso10 = 'recursos/imagenes/Piso10subnivel1.jpg'
 
-        piso_1 = Piso()
-        piso_1.piso(0, ALTO, imagen_piso1)
-        piso_acumulativa = piso_1.rect.width
-        piso_1.rect
+    piso_1 = Piso()
+    piso_1.piso(0, ALTO, imagen_piso1)
+    piso_acumulativa = piso_1.rect.width
+    piso_1.rect
 
-        piso_2 = Piso()
-        piso_2.piso(piso_acumulativa, ALTO, imagen_piso2)
-        piso_acumulativa += piso_2.rect.width
+    piso_2 = Piso()
+    piso_2.piso(piso_acumulativa, ALTO, imagen_piso2)
+    piso_acumulativa += piso_2.rect.width
 
-        piso_3 = Piso()
-        piso_3.piso(piso_acumulativa, ALTO, imagen_piso3)
-        piso_acumulativa += piso_3.rect.width
+    piso_3 = Piso()
+    piso_3.piso(piso_acumulativa, ALTO, imagen_piso3)
+    piso_acumulativa += piso_3.rect.width
 
-        piso_4 = Piso()
-        piso_4.piso(piso_acumulativa, ALTO, imagen_piso4)
-        piso_acumulativa += piso_4.rect.width
+    piso_4 = Piso()
+    piso_4.piso(piso_acumulativa, ALTO, imagen_piso4)
+    piso_acumulativa += piso_4.rect.width
 
-        piso_5 = Piso()
-        piso_5.piso(piso_acumulativa, ALTO, imagen_piso5)
-        piso_acumulativa += piso_5.rect.width
+    piso_5 = Piso()
+    piso_5.piso(piso_acumulativa, ALTO, imagen_piso5)
+    piso_acumulativa += piso_5.rect.width
 
-        piso_6 = Piso()
-        piso_6.piso(piso_acumulativa, ALTO, imagen_piso6)
-        piso_acumulativa += piso_6.rect.width
+    piso_6 = Piso()
+    piso_6.piso(piso_acumulativa, ALTO, imagen_piso6)
+    piso_acumulativa += piso_6.rect.width
 
-        piso_7 = Piso()
-        piso_7.piso(piso_acumulativa, ALTO, imagen_piso7)
-        piso_acumulativa += piso_7.rect.width
+    piso_7 = Piso()
+    piso_7.piso(piso_acumulativa, ALTO, imagen_piso7)
+    piso_acumulativa += piso_7.rect.width
 
-        piso_8 = Piso()
-        piso_8.piso(piso_acumulativa, ALTO, imagen_piso8)
-        piso_acumulativa += piso_8.rect.width
+    piso_8 = Piso()
+    piso_8.piso(piso_acumulativa, ALTO, imagen_piso8)
+    piso_acumulativa += piso_8.rect.width
 
-        piso_9 = Piso()
-        piso_9.piso(piso_acumulativa, ALTO, imagen_piso9)
-        piso_acumulativa += piso_9.rect.width
-        sprites_piso = pygame.sprite.Group()
+    piso_9 = Piso()
+    piso_9.piso(piso_acumulativa, ALTO, imagen_piso9)
+    piso_acumulativa += piso_9.rect.width
+    sprites_piso = pygame.sprite.Group()
 
-        piso_10 = Piso()
-        piso_10.piso(piso_acumulativa, ALTO, imagen_piso10)
-        piso_acumulativa += piso_10.rect.width
+    piso_10 = Piso()
+    piso_10.piso(piso_acumulativa, ALTO, imagen_piso10)
+    piso_acumulativa += piso_10.rect.width
 
-        sprites_piso.add(piso_1)
-        sprites_piso.add(piso_2)
-        sprites_piso.add(piso_3)
-        sprites_piso.add(piso_4)
-        sprites_piso.add(piso_5)
-        sprites_piso.add(piso_6)
-        sprites_piso.add(piso_7)
-        sprites_piso.add(piso_8)
-        sprites_piso.add(piso_9)
-        sprites_piso.add(piso_10)
+    sprites_piso.add(piso_1)
+    sprites_piso.add(piso_2)
+    sprites_piso.add(piso_3)
+    sprites_piso.add(piso_4)
+    sprites_piso.add(piso_5)
+    sprites_piso.add(piso_6)
+    sprites_piso.add(piso_7)
+    sprites_piso.add(piso_8)
+    sprites_piso.add(piso_9)
+    sprites_piso.add(piso_10)
 
-        return sprites_piso, piso_1.rect, piso_8.rect
-
-def objetos():
-    puerta = Objecto()
-    imagen_puerta = 'recursos/imagenes/Puerta1.png'
-    puerta.objecto(240, 400 - 150, imagen_puerta)
-
-    sprite_objectos = pygame.sprite.Group()
-
-    sprite_objectos.add(puerta)
-
-    return sprite_objectos
-
-def Notificaciones():
-    x = Objecto()
-    imagen_x = ['recursos/imagenes/Pressup1.png']
-    x.objecto(ANCHO - 170, 15, imagen_x)
-
-    notificaciones_sprite = pygame.sprite.Group()
-
-    notificaciones_sprite.add(x)
-
-    return notificaciones_sprite
-
+    return sprites_piso, piso_1.rect, piso_8.rect
 
 
 def main1():
@@ -256,8 +216,6 @@ def main1():
     # jugador_imagen = jugador.imagen_rect()
     sprites_piso, izquierda, derecha = pisos()
     grupos_sprite_piso = sprites_piso.sprites()
-    sprite_objectos = objetos()
-    notificaciones_sprite = Notificaciones()
     # grupo_sprite_objectos = sprite_objectos()
     jugador = Jugador()
     luffy = pygame.sprite.Group()
@@ -274,24 +232,12 @@ def main1():
         sprites_piso.update()
         sprites_piso.draw(pantalla1)
 
-        sprite_objectos.update()
-        sprite_objectos.draw(pantalla1)
-
-        keys = pygame.key.get_pressed()
-        if pygame.sprite.groupcollide(luffy, sprite_objectos, False, False):
-            # print("Hello world")
-            notificaciones_sprite.update()
-            notificaciones_sprite.draw(pantalla1)
-            if keys[pygame.K_UP]:
-                print("mama gallo")
-
         luffy.draw(pantalla1)
         luffy.update()
 
         alvida = Alvidalevel()
         alvida.update()
         pygame.display.flip()
-
 
     pygame.quit()
 

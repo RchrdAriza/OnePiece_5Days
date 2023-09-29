@@ -23,7 +23,7 @@ BLANCO = (255, 255, 255)
 ROJO = (255, 0, 0)
 H_FA2F2F = (255, 47, 47)
 VERDE = (0, 255, 0)
-AZUL = (0,0, 255)
+AZUL = (0, 0, 255)
 AZUL2 = (64, 64, 255)
 H_50D2FE = (94, 210, 254)
 
@@ -54,14 +54,12 @@ class Alvidalevel(pygame.sprite.Sprite):
         global INACTIVIDAD
         global VOLTEADO
 
-        variable_aumentadora_sprite = 0
-
         jugador_bottom = jugador.rect.midbottom
 
-        for sprite in grupos_sprite_piso:
+        for i, sprite in enumerate(grupos_sprite_piso):
 
-            if variable_aumentadora_sprite > 6:
-                variable_aumentadora_sprite = 0
+            # if variable_aumentadora_sprite > 6:
+            #     variable_aumentadora_sprite = 0
 
             # verifica si el jugador esta tocando el piso
             if sprite.rect.collidepoint(jugador_bottom):
@@ -69,7 +67,7 @@ class Alvidalevel(pygame.sprite.Sprite):
                 self.enElSuelo = True
 
             # verifica si el jugador esta chocando con un obtaculo del piso (debo mejorarla)
-            if jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite]) and jugador.rect.colliderect(grupos_sprite_piso[variable_aumentadora_sprite + 1]):
+            if jugador.rect.colliderect(grupos_sprite_piso[i]) and jugador.rect.colliderect(grupos_sprite_piso[i + 1]):
                 # jugador.rect.x += 1
                 self.colision_lateral_x_positiva = True
 
@@ -78,14 +76,10 @@ class Alvidalevel(pygame.sprite.Sprite):
                 self.colision_saltando = True
 
             # Variables acumuladora que me permite iterar sobre distintos sobre distintos sprites sin usar bucle for
-            variable_aumentadora_sprite += 1
-
 
         # En caso de que no esté en el suelo llama la funcion enElAire de la clase jugador
         if not self.enElSuelo:
             jugador.enElAire()
-
-
 
         # detecta las teclas presionadas y las almacena en la variable key
         key = pygame.key.get_pressed()
@@ -95,7 +89,6 @@ class Alvidalevel(pygame.sprite.Sprite):
             jugador.primer_ataque()
             self.atacando = True
             INACTIVIDAD = 0
-
 
         # si el usuario presiona d y no esta chocando con nada entonces avanza
         if key[pygame.K_d] and not self.colision_lateral_x_positiva and not self.colision_saltando:
@@ -122,7 +115,7 @@ class Alvidalevel(pygame.sprite.Sprite):
                 if izquierda.left > 0:
                     sprite.rect.x += 10
                 elif izquierda.left < 0 and derecha.right < FONDO_ANCHO:
-                        sprite.rect.x += 10
+                    sprite.rect.x += 10
             for objectos in sprite_objectos:
                 objectos.rect.x += 10
 
@@ -134,14 +127,12 @@ class Alvidalevel(pygame.sprite.Sprite):
             jugador.saltar()
             INACTIVIDAD = 0
 
-
         if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and not VOLTEADO and not self.atacando:
             if INACTIVIDAD < 500:
                 jugador.quieto()
             else:
-            # Si demora mas de 500 iteraciones sin relaizar nada comienza la animacion de dormido
+                # Si demora mas de 500 iteraciones sin relaizar nada comienza la animacion de dormido
                 jugador.demasiado_quieto()
-
 
         if not self.en_movimiento_derecha and not self.en_movimiento_izquierda and self.enElSuelo and VOLTEADO and not self.atacando:
             if INACTIVIDAD < 500:
@@ -149,12 +140,9 @@ class Alvidalevel(pygame.sprite.Sprite):
             else:
                 jugador.demasiado_quieto()
 
-
         jugador.rect.y += self.GRAVEDAD
 
-
         INACTIVIDAD += self.contador_inactividad
-
 
         if background_x > 0:
             background_x = 0
@@ -164,62 +152,65 @@ class Alvidalevel(pygame.sprite.Sprite):
             background_x = -limite_derecho
 
 # funcion que cargar y coloca los sprites que simulan el suelo
+
+
 def pisos():
 
-        imagen_piso1 = 'recursos/imagenes/Alvidapiso1.jpg'
-        imagen_piso2 = 'recursos/imagenes/Alvidapiso2.jpg'
-        imagen_piso3 = 'recursos/imagenes/Alvidapiso3.jpg'
-        imagen_piso4 = 'recursos/imagenes/Alvidapiso4.jpg'
-        imagen_piso5 = 'recursos/imagenes/Alvidapiso5.jpg'
-        imagen_piso6 = 'recursos/imagenes/Alvidapiso6.jpg'
-        imagen_piso7 = 'recursos/imagenes/Alvidapiso7.jpg'
-        imagen_piso8 = 'recursos/imagenes/Alvidapiso8.jpg'
+    imagen_piso1 = 'recursos/imagenes/Alvidapiso1.jpg'
+    imagen_piso2 = 'recursos/imagenes/Alvidapiso2.jpg'
+    imagen_piso3 = 'recursos/imagenes/Alvidapiso3.jpg'
+    imagen_piso4 = 'recursos/imagenes/Alvidapiso4.jpg'
+    imagen_piso5 = 'recursos/imagenes/Alvidapiso5.jpg'
+    imagen_piso6 = 'recursos/imagenes/Alvidapiso6.jpg'
+    imagen_piso7 = 'recursos/imagenes/Alvidapiso7.jpg'
+    imagen_piso8 = 'recursos/imagenes/Alvidapiso8.jpg'
 
-        piso_1 = Piso()
-        piso_1.piso(0, ALTO, imagen_piso1)
-        piso_acumulativa = piso_1.rect.width
-        piso_1.rect
+    piso_1 = Piso()
+    piso_1.piso(0, ALTO, imagen_piso1)
+    piso_acumulativa = piso_1.rect.width
+    piso_1.rect
 
-        piso_2 = Piso()
-        piso_2.piso(piso_acumulativa, ALTO, imagen_piso2)
-        piso_acumulativa += piso_2.rect.width
+    piso_2 = Piso()
+    piso_2.piso(piso_acumulativa, ALTO, imagen_piso2)
+    piso_acumulativa += piso_2.rect.width
 
-        piso_3 = Piso()
-        piso_3.piso(piso_acumulativa, ALTO, imagen_piso3)
-        piso_acumulativa += piso_3.rect.width
+    piso_3 = Piso()
+    piso_3.piso(piso_acumulativa, ALTO, imagen_piso3)
+    piso_acumulativa += piso_3.rect.width
 
-        piso_4 = Piso()
-        piso_4.piso(piso_acumulativa, ALTO, imagen_piso4)
-        piso_acumulativa += piso_4.rect.width
+    piso_4 = Piso()
+    piso_4.piso(piso_acumulativa, ALTO, imagen_piso4)
+    piso_acumulativa += piso_4.rect.width
 
-        piso_5 = Piso()
-        piso_5.piso(piso_acumulativa, ALTO, imagen_piso5)
-        piso_acumulativa += piso_5.rect.width
+    piso_5 = Piso()
+    piso_5.piso(piso_acumulativa, ALTO, imagen_piso5)
+    piso_acumulativa += piso_5.rect.width
 
-        piso_6 = Piso()
-        piso_6.piso(piso_acumulativa, ALTO, imagen_piso6)
-        piso_acumulativa += piso_6.rect.width
+    piso_6 = Piso()
+    piso_6.piso(piso_acumulativa, ALTO, imagen_piso6)
+    piso_acumulativa += piso_6.rect.width
 
-        piso_7 = Piso()
-        piso_7.piso(piso_acumulativa, ALTO, imagen_piso7)
-        piso_acumulativa += piso_7.rect.width
+    piso_7 = Piso()
+    piso_7.piso(piso_acumulativa, ALTO, imagen_piso7)
+    piso_acumulativa += piso_7.rect.width
 
-        piso_8 = Piso()
-        piso_8.piso(piso_acumulativa, ALTO, imagen_piso8)
-        piso_acumulativa += piso_8.rect.width
+    piso_8 = Piso()
+    piso_8.piso(piso_acumulativa, ALTO, imagen_piso8)
+    piso_acumulativa += piso_8.rect.width
 
-        sprites_piso = pygame.sprite.Group()
-        sprites_piso.add(piso_1)
-        sprites_piso.add(piso_2)
-        sprites_piso.add(piso_3)
-        sprites_piso.add(piso_4)
-        sprites_piso.add(piso_5)
-        sprites_piso.add(piso_6)
-        sprites_piso.add(piso_7)
-        sprites_piso.add(piso_8)
+    sprites_piso = pygame.sprite.Group()
+    sprites_piso.add(piso_1)
+    sprites_piso.add(piso_2)
+    sprites_piso.add(piso_3)
+    sprites_piso.add(piso_4)
+    sprites_piso.add(piso_5)
+    sprites_piso.add(piso_6)
+    sprites_piso.add(piso_7)
+    sprites_piso.add(piso_8)
 
-        # Retorna el grupo de sprite que controla los pisos, ademas del primer y ultimo sprite
-        return sprites_piso, piso_1.rect, piso_8.rect
+    # Retorna el grupo de sprite que controla los pisos, ademas del primer y ultimo sprite
+    return sprites_piso, piso_1.rect, piso_8.rect
+
 
 def objetos():
 
@@ -233,6 +224,7 @@ def objetos():
 
     return sprite_objectos
 
+
 def Notificaciones():
 
     x = Objecto()
@@ -244,7 +236,6 @@ def Notificaciones():
     notificaciones_sprite.add(x)
 
     return notificaciones_sprite
-
 
 
 def main():
@@ -301,7 +292,6 @@ def main():
         alvida = Alvidalevel()
         alvida.update()
         pygame.display.flip()
-
 
     pygame.quit()
 
